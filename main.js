@@ -16,18 +16,16 @@ var data = [];
 
 var i;
 for (i = 0; i < urls.length; i++) {
-    $('.btn').click(function(){
-        $.ajax({
-            url:urls[i],
-            type:"GET",
-            success: function(result){
-                // var resultArray = [urls[i], result];
-                data.push(result);
-            },
-            error:function(error){
-                console.log(`Error ${error}`);
-            }
-        })
+    $.ajax({
+        url:urls[i],
+        type:"GET",
+        success: function(result){
+            // var resultArray = [urls[i], result];
+            data.push(result);
+        },
+        error:function(error){
+            console.log(`Error ${error}`);
+        }
     })
 }
 
