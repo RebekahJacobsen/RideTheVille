@@ -10,8 +10,22 @@
 <body>
     <header class="header">        
         <div class="header-top-flexbox">
-            <button class="btn">Apply for discounts!
-                    <div class="dropdown">
+            <!-- <button class="btn">Apply for discounts! -->
+                    <form>
+                            <fieldset>
+                               <legend>Selecting elements</legend>
+                               <p>
+                                  <label>Select list</label>
+                                  <select id = "myList">
+                                    <option value = "bird"><a href="https://www.bird.co/press/bird-announces-one-bird/" target="_self">One Bird</a></option>
+                                    <option value = "lime"><a href="https://www.li.me/community-impact" target="_self">Lime Access</a></option>
+                                    <option value = "bolt"><a href="https://www.micromobility.com/bolt-forward/" target="_self">Bolt Forward</a></option>
+                                    <option value = "spin"><a href="https://www.spin.app/spin-access" target="_self">Spin Access</a></option>
+                                  </select>
+                               </p>
+                            </fieldset>
+                         </form>
+                    <!-- <div class="dropdown">
                         <div id="discounts-list">
                             <div class="dropdown-content">
                                 <a href="https://www.bird.co/press/bird-announces-one-bird/" target="_self">One Bird</a>
@@ -21,7 +35,7 @@
                             </div>
                         </div>
                     </div>
-            </button>        
+            </button>         -->
             <nav class="header-nav-flexbox">
                 <ul>
                     <li><a href="#" id="home">Home</a></li>
