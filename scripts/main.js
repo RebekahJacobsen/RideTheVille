@@ -43,6 +43,7 @@ var boltShortIndex = findShortestDistance(boltDistancePoint);
 var spinShortIndex = findShortestDistance(spinDistancePoint);
 
 
+
 // ______________________________________________________________________________________________________________
 // Geocode
 // ______________________________________________________________________________________________________________
