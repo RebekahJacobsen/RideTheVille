@@ -13,14 +13,14 @@
             <!-- <button class="btn">Apply for discounts! -->
                     <form>
                             <fieldset>
-                               <legend>Selecting elements</legend>
+                               <legend>Discounts</legend>
                                <p>
-                                  <label>Select list</label>
-                                  <select id = "myList">
-                                    <option value = "bird"><a href="https://www.bird.co/press/bird-announces-one-bird/" target="_self">One Bird</a></option>
-                                    <option value = "lime"><a href="https://www.li.me/community-impact" target="_self">Lime Access</a></option>
-                                    <option value = "bolt"><a href="https://www.micromobility.com/bolt-forward/" target="_self">Bolt Forward</a></option>
-                                    <option value = "spin"><a href="https://www.spin.app/spin-access" target="_self">Spin Access</a></option>
+                                    <select name="discounts-list" onchange="location = this.value;">
+                                    <option value="">Select Offer</option>
+                                    <option value = "https://www.bird.co/press/bird-announces-one-bird/">One Bird</option>
+                                    <option value = "https://www.li.me/community-impact">Lime Access</option>
+                                    <option value = "https://www.micromobility.com/bolt-forward/">Bolt Forward</a></option>
+                                    <option value = "https://www.spin.app/spin-access">Spin Access</a></option>
                                   </select>
                                </p>
                             </fieldset>
@@ -89,5 +89,11 @@
                 While rain can make a scooter ride dangerous, together with proper preparation, it’s possible to safely make your way house. However, if a lightning storm occurs, you have to quickly cease using your electric scooter and head for refuge. Lightning is extremely dangerous and can maim and kill you.<span id="click-here"><a href="https://safer-america.com/3-electric-scooter-tips-for-safety/" id="safety-add" alt="_blank">Click here for more safety tips!</a></span></p>
     </footer>   
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script type="text/javascript">
+        function handleSelect(elm)
+        {
+        window.location = elm.value+".php";
+        }
+    </script>
 </body>
 </html>
