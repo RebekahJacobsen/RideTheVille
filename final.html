@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Testing</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=yes">
+    <meta charset="utf-8">
+    <style>
+    /* Always set the map height explicitly to define the size of the div
+    * element that contains the map. */
+    #map {
+		height: 100%;
+		width: 100%;
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+		height: 100%;
+		margin: 0;
+		padding: 0;
+    }
+	input {
+		text-rendering: auto;
+		color: initial;
+		letter-spacing: normal;
+		word-spacing: normal;
+		text-transform: none;
+		text-indent: 0px;
+		text-shadow: none;
+		display: inline-block;
+		text-align: start;
+		margin: 0em;
+		font: 400 13.3333px Arial;
+	}
+	.light input[type="text"] {
+		border: 1px solid #a7a7a7;
+		float: left;
+		height: 22px;
+		padding: 4px;
+		padding-left: 33px;
+		width: 270px;
+		padding-top: 9px;
+		margin-top: 3px;
+		background: url(search-icon.png) no-repeat 8px 10px #fcfcfc;
+	}
+	
+	.hero-img {
+		width:20px;
+		height:15px;
+	}
+	img {
+    width: 50%;
+	}
+
+	.header-top-flexbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 2px solid red;
+	height:10%;
+}
+/* Drop-down */
+
+#discounts {
+    position: relative;
+    display: inline-block;
+}
+
+#discounts-topic {
+    color: red;
+    font-family: "Arial Black", Gadget, sans-serif;
+    padding: 10px;
+}
+
+#discounts-list {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.header-nav-flexbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.header-top-flexbox div{
+	float: left;
+	text-decoration: none;
+}
+
+nav ul {
+    display: flex;
+    justify-content: flex-end;
+    /* margin: 20px; */
+}
+
+nav ul li {
+    color: red;
+    font-size: 24px;
+    list-style: none;
+    margin: 25px;
+}
+.row {
+  display: flex;
+  height:60%;
+}
+
+.column {
+  flex: 50%;
+}
+    </style>
+</head>
+<body>
+	<header class="header">        
+        <div class="header-top-flexbox">
+			<div>
+				<figure class="hero-img">
+						<img src="img/logo-2.jpg" alt="Scooter image">
+				</figure>
+			</div>
+			<div>
+                    <form>
+                            <fieldset>
+                               <legend>Discounts</legend>
+                               <p>
+                                    <select name="discounts-list" onchange="location = this.value;">
+                                    <option value="">Select Offer</option>
+                                    <option value = "https://www.bird.co/press/bird-announces-one-bird/">One Bird</option>
+                                    <option value = "https://www.li.me/community-impact">Lime Access</option>
+                                    <option value = "https://www.micromobility.com/bolt-forward/">Bolt Forward</a></option>
+                                    <option value = "https://www.spin.app/spin-access">Spin Access</a></option>
+                                  </select>
+                               </p>
+                            </fieldset>
+                    </form>
+			</div>
+			<div>
+            <nav class="header-nav-flexbox">
+				
+                <ul>
+                    <li><a href="#" id="home">Home</a></li>
+                    <li><a href="#trip-input" id="trip-link" alt="Trip input">Create Trip</a></li>
+                    <li><a href="#footer-safety" id="safety-link" alt="Safety info">Safety Information</a></li>
+                </ul>
+            </nav>
+			</div>
+        </div>
+    </header>
+	<div class="input-box">
+		<fieldset>
+		<legend>Start your journey</legend>
+		<form>
+			<input type="text" name="starting-point" id="starting-point" value="Your current location" placeholder="Enter Adress">
+			<br><br>
+			<input type="text" name="ending-point" id="ending-point" placeholder="Enter Adress">
+			<br><br>
+			<input id="submit" type="button" value="Submit" onclick="showRoute()">
+		</form>
+		</fieldset>
+	</div>
+	
+    
+	<div class="row">
+		<div class="column"><div id="map"></div></div>
+		
+		<div class="column"><table style="width:100%">
+		<tr>
+			<td>Bird</td>
+			<td id="walking-distance0"></td>
+			<td><input type="button" value="Try On Map" onclick="showRouteWithScooter()"/></td>
+		</tr>
+		<tr>
+			<td>Lime</td>
+			<td id="walking-distance1"></td>
+			<td><input type="button" value="Try On Map" onclick="showRouteWithScooter()"/></td>
+		</tr>
+		<tr>
+			<td>Bolt</td>
+			<td id="walking-distance2"></td>
+			<td><input type="button" value="Try On Map" onclick="showRouteWithScooter()"/></td>
+		</tr>
+		<tr>
+			<td>Spin</td>
+			<td id="walking-distance3"></td>
+			<td><input type="button" value="Try On Map" onclick="showRouteWithScooter()"/></td>
+		</tr>
+	</table></div>
+	</div>
+	
+	<input id="showScooters" type="button" value="Submit" onclick="showScooters()">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+      // Note: This example requires that you consent to location sharing when
+      // prompted by your browser. If you see the error "The Geolocation service
+      // failed.", it means you probably did not give permission for the browser to
+      // locate you.
+	var mainData = [ {"last_updated":1567938530,"data":{"bikes":[{"bike_id":"f22be8e4-eb5b-46d7-8c54-b8fe2a4d84d4","lat":38.25461,"lon":-85.751662,"is_reserved":0,"is_disabled":0},{"bike_id":"87bbd22f-dabe-4d07-b81d-cf79479d683c","lat":38.254578,"lon":-85.751701,"is_reserved":0,"is_disabled":0}],"ttl":60}},
+					{"last_updated":1567938551,"ttl":0,"max_page":0,"data":{"bikes":[{"bike_id":"5d923765-d246-4cb3-bf26-e0b3150376c5","lat":"38.178425","lon":"-85.753582","is_reserved":0,"is_disabled":0,"vehicle_type":"scooter"},{"bike_id":"161a9a6a-e9d3-4cd9-b053-e2f886922f8a","lat":"38.217224","lon":"-85.702293","is_reserved":0,"is_disabled":0,"vehicle_type":"scooter"}],"vehicle_type":"scooter"}},
+					{"last_updated":1567938563,"ttl":60,"data":{"bikes":[{"bike_id":"0c7bd7f873","lat":"38.204542","lon":"-85.791674","is_reserved":0,"is_disabled":0},{"bike_id":"253a052c7b","lat":"38.198468","lon":"-85.769105","is_reserved":0,"is_disabled":0},{"bike_id":"baaae01468","lat":"38.251150","lon":"-85.757648","is_reserved":0,"is_disabled":0}]}},
+					{"last_updated":1567938579,"ttl":0,"data":{"bikes":[{"bike_id":1790137,"lat":38.25402,"lon":-85.74666,"vehicle_type":"scooter","is_reserved":0,"is_disabled":0},{"bike_id":2358795,"lat":38.25676,"lon":-85.7083,"vehicle_type":"scooter","is_reserved":0,"is_disabled":0},{"bike_id":5802753,"lat":38.25662,"lon":-85.70805,"vehicle_type":"scooter","is_reserved":0,"is_disabled":0}]}}
+					];
+
+    var map, infoWindow;
+	var directionsService;
+	var directionsRender;
+	var apiURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDhIhJRFyekqCAYANSPRvxV0EjFvTEb9nw&callback=initMap";
+	var distance = []
+	var closetAdresses = [];
+	var dataset = [];
+	
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: -34.397, lng: 150.644},
+			zoom: 14
+        });
+		infoWindow = new google.maps.InfoWindow;
+
+		var bikeLayer = new google.maps.BicyclingLayer();
+		bikeLayer.setMap(map);
+		var trafficLayer = new google.maps.TrafficLayer();
+		trafficLayer.setMap(map);
+		
+        infoWindow = new google.maps.InfoWindow;
+
+        if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+				lat: position.coords.latitude,
+				lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('You are here!');
+            infoWindow.open(map);
+			map.setCenter(pos);
+			}, function() {
+				handleLocationError(true, infoWindow, map.getCenter());
+			});
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
+	
+	function initRender() {
+		directionsService = new google.maps.DirectionsService();
+		directionsDisplay = new google.maps.DirectionsRenderer();
+		map = new google.maps.Map(document.getElementById('map'), {
+			center: {lat: -34.397, lng: 150.644},
+			zoom: 14
+        });
+	directionsDisplay.setMap(map);
+	}
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+    }
+	
+	function showRoute() {
+		var start = document.getElementById('starting-point').value;
+		var end = document.getElementById('ending-point').value;
+		var request = {
+			origin: start,
+			destination: end,
+			travelMode: "BICYCLING"
+		};
+		
+		$.ajax({
+				url: apiURL,
+				type:"GET",
+				success: initRender(),
+				error: function(error){
+					console.log(`Error ${error}`);
+				}		
+		})
+		
+		directionsService.route(request, function(result, status) {
+			if (status == 'OK') {
+				directionsDisplay.setDirections(result);
+			}
+		});
+		
+		
+	}
+	
+	
+	function showScooters(){
+		var temp;
+		for (var i = 0; i < 4; ++i) {
+			var n = mainData[i];
+			var k = n.data;
+			var l = k.bikes;
+			temp = [];
+			for (var j = 0; j < l.length; ++j){
+				var m = l[j];
+				if (m.is_reserved == 0 && m.is_disabled == 0)
+					temp.push("{lat: " + m.lat +", lng: " + m.lon +"}");
+			}
+			dataset.push(temp);
+		}
+		
+	
+	if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = "{lat: " + position.coords.latitude + ", lng: " + position.coords.longitude + "}";
+
+            var service = new google.maps.DistanceMatrixService();
+			for (var i = 0; i < 4; ++i) {
+				service.getDistanceMatrix(
+						{
+						origins: [pos],
+						destinations: dataset[i],
+						travelMode: 'WALKING'
+						}, callback);
+	
+				function callback(response, status){			
+				if (status == 'OK') {
+				var destinations = response.destinationAddresses;
+				var results = response.rows[0].elements;
+				var closet = results[0].distance.value;
+				var index = 0;
+				for (var k = 0; k < results.length; k++) {
+					var element = results[j];
+					var distance = element.distance.value;
+					if (distance < closet){
+						closet = distance;
+						index = k;
+					}
+				}
+				distance.push(closet);
+				closetAdresses.push(destinations[index]);
+				}
+			}
+			for (var i = 0; i < 4; ++i){
+				document.getElementById("walking-distance"+i).innerHTML = "<p>" + distance[i] + "<p>";
+			}
+		  }}
+		, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+		}
+	}
+	
+    </script>
+	<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhIhJRFyekqCAYANSPRvxV0EjFvTEb9nw&callback=initMap">
+    </script>
+  </body>
+</html>
